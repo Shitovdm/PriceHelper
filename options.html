@@ -1,0 +1,16 @@
+﻿<script type="text/javascript">
+textforalert.value = texthello
+    function setnewtext()
+    {
+
+    	 texthello = textforalert.value
+    }
+</script>
+    <div align='center'>
+	<p>Изменить текст сообщения, которое будем выводить по</p><input type="button" value="этой кнопке" onClick="alert(texthello)"/><br />
+	<script type="text/javascript">
+            textforalert.value = texthello
+        </script>
+        <input id='textforalert' type="text" value=""/><br />
+        <input type="button" value="Назначить новый текст" onClick="setnewtext()"/>
+    </div>

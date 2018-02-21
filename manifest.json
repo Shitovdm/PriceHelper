@@ -1,0 +1,25 @@
+{
+    "manifest_version": 2,
+    "name" : "TradeHelper", 
+    "version" : "1",
+    
+    "options_page": "options.html",
+    "description" : "First App",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "web_accessible_resources": [
+    "js/jquery.min.js"
+],
+    "browser_action": {
+        "default_title": "Add resize control to element",
+        "default_icon": "img/icon.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "https://*/*",
+        "http://*/*"
+    ]
+}
