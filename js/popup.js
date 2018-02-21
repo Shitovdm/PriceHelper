@@ -12,6 +12,10 @@ $(document).ready(function(){
         
         // Обработчик url на предмет в Staam.
         function handler(res){
+            var Error = {   //  Ошибка.
+                state:false, 
+                desc:"" 
+            };   
             $("#tmPrice").append(res);
             //port.postMessage(res);
             //  Парсим название предмета.
@@ -29,25 +33,52 @@ $(document).ready(function(){
             
             switch(quality.length){
                 case 10:    //  Поношенное.
-                    Exterior = "(Well-Worn)";
+                    Exterior = "Well-Worn";
                     break;
                 case 17:    //  Закаленное в боях.
-                    Exterior = "(Battle-Scarred)";
+                    Exterior = "Battle-Scarred";
                     break;
                 case 23:    //  После полевых испытаний.
-                    Exterior = "(Field-Tested)";
+                    Exterior = "Field-Tested";
                     break;
                 case 18:    //  Немного поношеное.
-                    Exterior = "(Minimal Wear)";
+                    Exterior = "Minimal Wear";
                     break;
                 case 14:    //  Прямо с завода.
-                    Exterior = "(Factory New)";
+                    Exterior = "Factory New";
                     break;
             }
             // Необходимо переводить название предметов на русский язык.
+            if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
+                //  Находим соответствие из словаря.
+                var itemWeapon = marketName.split('|')[0];
+                var itemName = (marketName.split('|')[1]).substring(1);
+                var i = 1;
+                while( Dicrionary["ru"][i] ){   //  Пока не достигли конца массива.
+                    if( Dicrionary["ru"][i] == itemName ){    //  Если нашлось имя.
+                        itemName = Dicrionary["en"][i];  //  Записываем английский вариант имени.
+                        console.log("GET: ",itemName);
+                        break;  //  Выходим из while.
+                    }else{
+                        i++;
+                    }
+                }
+                if(/[а-я]+/.test(itemName)){   //  Если перевода названию не нашлось в словаре.
+                    Error.state = true;
+                    Error.desc = "В словаре нет перевода для данного предмета.";
+                }
+                marketName = itemWeapon + "| " + itemName;  //  Формируем market_name.
+            }
+            if(!Error.state){   //  Если ошибок не было.
+                var marketNameURL = marketName.replace( /\|/g , "%7C" );
+                marketNameURL = marketNameURL.replace( /\s/g,"%20" );
+                var URL = marketNameURL + "%20%28" + Exterior + "%29";
+                
+                port.postMessage(URL);
+            }else{  //  Ошибка.
+                port.postMessage(Error.desc);
+            }
             
-            port.postMessage(marketName);
-            port.postMessage(Exterior);
             
         }   
         
