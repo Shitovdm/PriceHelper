@@ -83,6 +83,9 @@ $(document).ready(function(){
         chrome.tabs.executeScript(null, {   //  При нажатии на иконку расширения происходит парсинг имени предмета.
             code: 'var testElements = document.getElementsByClassName("item-h1");' +
                 ' var el = testElements[0]; ' +
+                ' var block = document.getElementsByClassName("ip-bestprice");' +
+                ' var re = block[0];' + 
+                ' re.style.backgroundColor = "#3f5999"; ' +
                 ' el.innerHTML'
         }, function (results) {
             handler(results);
@@ -97,6 +100,7 @@ $(document).ready(function(){
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     $("#tmPrice").append(xhr.responseText);
+                    
                     //  Парсим код страницы.
                 }
             };

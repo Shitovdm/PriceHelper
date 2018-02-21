@@ -1,28 +1,46 @@
-/*chrome.browserAction.onClicked.addListener(function(tab) {
-  // No tabs or host permissions needed!
-  alert('Looking on the page' + tab.url + ' element with desired classname');
-  chrome.tabs.executeScript({
-    code: 'var testElements = document.getElementsByClassName("market_listing_price"); var el = testElements[0]; if (el) {el.style.color = "red";}'
-  });
-});*/
+
 //  Вещаем обработчик сообщений.
 chrome.extension.onConnect.addListener(function (port) {
     port.onMessage.addListener(function (msg) {
         console.log("Popup.js say: " + msg);
-        //port.postMessage("Hi Popup.js");
+        //  Получаем исходный код страницы предмета Steam.
+        
         //  Выполняет действие с DOM.
         
     });
 });
- 
+
 /*
-var xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://steamcommunity.com/market/listings/730/AK-47%20%7C%20Redline%20%28Field-Tested%29", true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                console.log(xhr.responseText);
-                //  Парсим код страницы.
-            }
-        }
-        xhr.send();
-        */
+ chrome.browserAction.onClicked.addListener(function(tab) {
+      chrome.tabs.executeScript({
+            code: ' var block = document.getElementsByClassName("ip-bestprice");' +
+                  ' var re = block[0];' +
+                  ' re.style.backgroundColor = "#3f5999"; '
+      });
+      console.log("qqqq");
+});*/
+function injected_main() {
+	console.log("Unject");
+}
+function pasteContent(){
+    $(".exchange-link").addClass("injectBlock");
+    $(".injectBlock").html("<b>ТЫ ПИДОР!!!</b>");
+   // $(".injectBlock").css("background-color","red");
+    console.log("work");
+}
+$(document).ready(function () {
+    $.get(chrome.extension.getURL('/js/injected.js'), 
+	function(data) {
+		var script = document.createElement("script");
+		script.setAttribute("type", "text/javascript");
+		script.innerHTML = data;
+		document.getElementsByTagName("head")[0].appendChild(script);
+		document.getElementsByTagName("body")[0].setAttribute("onLoad", "injected_main();");
+                
+                
+                pasteContent();
+                
+                
+	}
+    );
+});
