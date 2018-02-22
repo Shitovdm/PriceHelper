@@ -5,6 +5,7 @@
     background-color: #1B2838;
     height: 300px;
     color:#ffffff;
+    line-height: 1em;
 }
 .subBlock{
     float: left;
@@ -22,13 +23,14 @@
 #difference{
     margin-right: 2%;
 }
+.subBlock small{
+    color:#888;
+}
 .subBlock b{
     font-size: 25px;
-    
-    float: left;
+    float: none;
     margin: 0 auto;
-    margin: 20px;
-    margin-left:30px;
+    line-height: 2.4em;
 }
 .priceTitle{
     float: left;
@@ -46,7 +48,8 @@
     margin: 2%;
     background-color: #101923;
     color:#ffffff;
-    padding:8px;
+    padding:3px;
+    line-height: 1.8;
 }
 .steamLink a{
     color:white;
@@ -54,4 +57,7 @@
     text-align: center;
     font-size: 14px!important;
     vertical-align: bottom;
+}
+.steamLink a:hover{
+    color: limegreen;
 }

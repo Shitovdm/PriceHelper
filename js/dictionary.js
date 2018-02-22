@@ -212,11 +212,8 @@ Dicrionary = {
         212: "Градиент",
         213: "Кровавая паутина",
         214: "Реактор",
-<<<<<<< Updated upstream
         215: "Янтарный градиент",
-=======
         215: "Янтарный градиент"
->>>>>>> Stashed changes
     },
     en: {
         1: "Tacticat",
@@ -431,10 +428,7 @@ Dicrionary = {
         212: "Fade",
         213: "Crimson Web",
         214: "Reactor",
-<<<<<<< Updated upstream
         215: "Amber Fade",
-=======
         215: "Amber Fade"
->>>>>>> Stashed changes
     }
 };

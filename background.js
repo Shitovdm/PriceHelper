@@ -52,16 +52,12 @@ function handler(res){
         //  Находим соответствие из словаря.
         var itemWeapon = marketName.split('|')[0];
         var itemName = (marketName.split('|')[1]).substring(1);
-        var i = 1;
-        console.log(marketName);
-        while( Dicrionary["ru"][i] ){   //  Пока не достигли конца массива.
-            console.log(Dicrionary["ru"][i]);
-            if( Dicrionary["ru"][i] == itemName ){    //  Если нашлось имя.
-                itemName = Dicrionary["en"][i];  //  Записываем английский вариант имени.
+        var firstChar = itemName[0];
+        for(var item in Dicrionary["ru"][firstChar]){
+            if( item == itemName){
+                itemName = Dicrionary["ru"][firstChar][item];
                 console.log("GET: ",itemName);
-                break;  //  Выходим из while.
-            }else{
-                i++;
+                break;
             }
         }
         if(/[а-я]+/.test(itemName)){   //  Если перевода названию не нашлось в словаре.
@@ -138,19 +134,23 @@ function pasteContent(){    //  &#8381;
     $(".injectBlock").html(""+
         "<div class='subBlock' id='lowest_price'>"+
             "<small class='priceTitle'>Текущая цена:</small>"+
+            "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='subBlock' id='median_price'>"+
             "<small class='priceTitle'>Средняя цена:</small>"+
+            "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
         "<div class='subBlock' id='volume'>"+
             "<small class='priceTitle'>Объем за 24 часа:</small>"+
+            "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='subBlock' id='difference'>"+
             "<small class='priceTitle'>Текущая - средняя:</small>"+
+            "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
@@ -167,7 +167,7 @@ function pasteContent(){    //  &#8381;
   
 }
 $(document).ready(function () {
-    $.get(chrome.extension.getURL('/js/dictionary.js'), 
+    $.get(chrome.extension.getURL('/js/dictNEW.js'), 
 	function(data) {
 		var script = document.createElement("script");
 		script.setAttribute("type", "text/javascript");
@@ -177,7 +177,8 @@ $(document).ready(function () {
                 
                 var testElements = document.getElementsByClassName("item-h1");
                 var el = testElements[0];
-                //console.log(Dicrionary["ru"][1]);
+                //console.log(Dicrionary["ru"]["А"].length);
+                
                 handler(el.innerHTML);  //  Обрабатываем содержимое контейнера item-h1
   
 	}
