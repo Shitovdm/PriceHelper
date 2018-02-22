@@ -1,9 +1,57 @@
-.injectBlock{
-    background-color: red;
-    height: 400px;
-    color:#ffffff;
-    padding-top: 190px!important;
+.clear{
+    clear:both;
 }
-.injectBlock b{
+.injectBlock{
+    background-color: #1B2838;
+    height: 300px;
+    color:#ffffff;
+}
+.subBlock{
+    float: left;
+    height:80px;
+    background-color: #101923;
+    width: 47%;
+    margin: 2%;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    color:#ffffff;
+}
+#median_price{
+    margin-right: 2%;
+}
+#difference{
+    margin-right: 2%;
+}
+.subBlock b{
     font-size: 25px;
+    
+    float: left;
+    margin: 0 auto;
+    margin: 20px;
+    margin-left:30px;
+}
+.priceTitle{
+    float: left;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-size: 14px!important;
+}
+.priceTitle:before{
+    content: "";
+}
+.steamLink{
+    float:left;
+    height: 30px;
+    width:96%;
+    margin: 2%;
+    background-color: #101923;
+    color:#ffffff;
+    padding:8px;
+}
+.steamLink a{
+    color:white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px!important;
+    vertical-align: bottom;
 }

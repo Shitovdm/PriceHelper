@@ -6,11 +6,11 @@
     "options_page": "options.html",
     "description" : "First App",
     "background": {
-        "scripts": ["js/jquery.min.js","background.js"],
+        "scripts": ["js/jquery.min.js","background.js","js/dictionary.js"],
         "persistent": false
     },
     "web_accessible_resources": [
-        "js/injected.js"
+        "js/dictionary.js"
     ],
     "browser_action": {
         "default_title": "Add resize control to element",
@@ -25,8 +25,9 @@
     "content_scripts": [
     {
       "matches": [ "https://market.csgo.com/*/*" ],
-      "js": [ "js/jquery.min.js", "background.js" ],
+      "js": [ "js/jquery.min.js", "background.js","js/dictionary.js" ],
       "css" : ["css/inject.css"],
+            "html" : ["html/inject.html"],
 	  "run_at": "document_end"
     }
   ]
