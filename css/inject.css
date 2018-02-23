@@ -2,20 +2,20 @@
     clear:both;
 }
 .injectBlock{
-    background-color: #1B2838;
+    background-color: #efefef;
     height: 300px;
-    color:#ffffff;
     line-height: 1em;
 }
 .subBlock{
     float: left;
     height:80px;
-    background-color: #101923;
+    background-color: rgba(130, 196, 201, 0.3);
     width: 47%;
     margin: 2%;
     margin-right: 0px;
     margin-bottom: 0px;
-    color:#ffffff;
+    color:#383838;
+    border: 1px solid #82c4c9;
 }
 #median_price{
     margin-right: 2%;
@@ -24,7 +24,7 @@
     margin-right: 2%;
 }
 .subBlock small{
-    color:#888;
+    color:#2277a8;
 }
 .subBlock b{
     font-size: 25px;
@@ -46,18 +46,17 @@
     height: 30px;
     width:96%;
     margin: 2%;
-    background-color: #101923;
-    color:#ffffff;
+    background-color: #efefef;
     padding:3px;
     line-height: 1.8;
 }
 .steamLink a{
-    color:white;
+    color:#383838;
     text-decoration: none;
     text-align: center;
     font-size: 14px!important;
     vertical-align: bottom;
 }
 .steamLink a:hover{
-    color: limegreen;
+    color: #82c4c9;
 }

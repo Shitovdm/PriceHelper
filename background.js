@@ -12,7 +12,7 @@ chrome.extension.onConnect.addListener(function (port) {
 function injected_main() {
 	console.log("Unject");
 }
-function handler(res){
+function handler(res,TMPrice){
     var Error = {   //  Ошибка.
         state:false, 
         desc:"" 
@@ -56,7 +56,7 @@ function handler(res){
         for(var item in Dicrionary["ru"][firstChar]){
             if( item == itemName){
                 itemName = Dicrionary["ru"][firstChar][item];
-                console.log("GET: ",itemName);
+                //console.log("GET: ",itemName);
                 break;
             }
         }
@@ -71,7 +71,7 @@ function handler(res){
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";
         //port.postMessage(URL);
-        getPageContent(URL);
+        getPageContent(URL,TMPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
         //port.postMessage(Error.desc);
@@ -79,7 +79,7 @@ function handler(res){
 }   
         
 //  Функция получает контент страницы Steam.
-function getPageContent(itemURL){   //  Запрашиваем конент для блока и вставляем содержимое ответа.
+function getPageContent(itemURL,TMPrice){   //  Запрашиваем конент для блока и вставляем содержимое ответа.
     var url = "https://steamcommunity.com/market/priceoverview/?country=RU&currency=5&appid=730&market_hash_name=" + itemURL;
     // Получаем и парсим код Steam страницы с предметом
     var xhr = new XMLHttpRequest();
@@ -119,6 +119,24 @@ function getPageContent(itemURL){   //  Запрашиваем конент дл
             }else{
                 $("#difference b").html("-");
             }
+            //  Расчитавыем проценты выгодности.
+            if(TMPrice && obj.lowest_price){
+                //  $TmToSteam[$i] = number_format((((($lowest_price_STEAM[$i] / 1.15 )*100)/($min_price_TM[$i]))-100), 2, '.', '');// Профит.
+                var persentTMtoSTEAMreal = ((( (lowest / 1.15) / TMPrice) * 100 ) - 100).toFixed(2);  //  Профит.
+ 
+                if(persentTMtoSTEAMreal > 30){  //  Меняем цвет процента выгоды.
+                    $("#percentTMtoSTEAM b").css("color","limegreen");
+                }else{
+                    if(persentTMtoSTEAMreal <= 0){
+                        $("#percentTMtoSTEAM b").css("color","red");
+                    }else{
+                        if(persentTMtoSTEAMreal > 20 && persentTMtoSTEAMreal < 30){
+                            $("#percentTMtoSTEAM b").css("color","#e5bc13");
+                        }
+                    }
+                }
+                $("#percentTMtoSTEAM b").html(persentTMtoSTEAMreal + " %");
+            }
             
             //  Вставляем ссылку на предмет.
             document.getElementById("linkSteam").href = "http://steamcommunity.com/market/listings/730/" + itemURL;
@@ -132,34 +150,34 @@ function pasteContent(){    //  &#8381;
     $(".exchange-link").addClass("injectBlock");
     //  Строим блок.
     $(".injectBlock").html(""+
-        "<div class='subBlock' id='lowest_price'>"+
+        "<div class='subBlock' id='lowest_price' title='Самая низка цена на предмет на торговой площадке Steam'>"+
             "<small class='priceTitle'>Текущая цена:</small>"+
             "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
-        "<div class='subBlock' id='median_price'>"+
+        "<div class='subBlock' id='median_price' title='Средняя цена на предмет за последнии сутки на торговой площаде Steam'>"+
             "<small class='priceTitle'>Средняя цена:</small>"+
             "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
-        "<div class='subBlock' id='volume'>"+
+        "<div class='subBlock' id='volume' title='Количество проданных предметов за последнии 24 часа на торговой площадке Steam'>"+
             "<small class='priceTitle'>Объем за 24 часа:</small>"+
             "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
-        "<div class='subBlock' id='difference'>"+
+        "<div class='subBlock' id='difference' title='Разница между самой низкой на данный момент ценой, и средней ценой за сутки на торговой площадке Steam'>"+
             "<small class='priceTitle'>Текущая - средняя:</small>"+
             "<div class='clear'></div>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
-        "<div class='subBlock' id='percentSTtoTM'>"+
-            "<small class='priceTitle'></small>"+
+        "<div class='subBlock' id='percentTMtoSTEAM' title='Процент прибыли/потери при покупке предмета а маркете и его продаже в Steam'>"+
+            "<small class='priceTitle'>Маркет &#8658; Стим-15%</small>"+
             "<b></b>"+
         "</div>"+
-        "<div class='subBlock' id='percentTMtoST'>"+
-            "<small class='priceTitle'></small>"+
+        "<div class='subBlock' id='percentTMtoST' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
+            "<small class='priceTitle'>Стим &#8658; Маркет</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
@@ -177,9 +195,12 @@ $(document).ready(function () {
                 
                 var testElements = document.getElementsByClassName("item-h1");
                 var el = testElements[0];
-                //console.log(Dicrionary["ru"]["А"].length);
+                //  Получаем цену и ордер со страницы. 
+                var TMPrice = parseFloat($(".ip-bestprice").text());
+                var TMOrderPriceAll = $(".item-stat .rectanglestat b");
+                var TMOrderPrice = parseFloat($(TMOrderPriceAll[5]).text());
                 
-                handler(el.innerHTML);  //  Обрабатываем содержимое контейнера item-h1
+                handler(el.innerHTML,TMPrice,TMOrderPrice);  //  Обрабатываем содержимое контейнера item-h1
   
 	}
     );
