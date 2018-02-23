@@ -12,7 +12,7 @@ chrome.extension.onConnect.addListener(function (port) {
 function injected_main() {
 	console.log("Unject");
 }
-function handler(res,TMPrice){
+function handler(res,TMPrice,TMOrderPrice){
     var Error = {   //  Ошибка.
         state:false, 
         desc:"" 
@@ -71,7 +71,7 @@ function handler(res,TMPrice){
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";
         //port.postMessage(URL);
-        getPageContent(URL,TMPrice);
+        getPageContent(URL,TMPrice,TMOrderPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
         //port.postMessage(Error.desc);
@@ -79,7 +79,7 @@ function handler(res,TMPrice){
 }   
         
 //  Функция получает контент страницы Steam.
-function getPageContent(itemURL,TMPrice){   //  Запрашиваем конент для блока и вставляем содержимое ответа.
+function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашиваем конент для блока и вставляем содержимое ответа.
     var url = "https://steamcommunity.com/market/priceoverview/?country=RU&currency=5&appid=730&market_hash_name=" + itemURL;
     // Получаем и парсим код Steam страницы с предметом
     var xhr = new XMLHttpRequest();
@@ -110,10 +110,17 @@ function getPageContent(itemURL,TMPrice){   //  Запрашиваем коне�
                 var lowest = parseFloat(((obj.lowest_price).substring(0,((obj.lowest_price).length) - 5)).replace( /\,/g , "." ));
                 var median = parseFloat(((obj.median_price).substring(0,((obj.median_price).length) - 5)).replace( /\,/g , "." ));
                 var difference = (lowest - median).toFixed(2);
-                if(difference < 0){
-                    $("#difference b").css("color","limegreen");
+                if(difference > -1 && difference < 1){
+                    $("#difference b").css("color","#e5bc13");
                 }else{
-                    $("#difference b").css("color","red");
+                    if(difference < -1){
+                        $("#difference b").css("color","limegreen");
+                    }else{
+                        if(difference > 1){
+                            $("#difference b").css("color","red");
+                        }
+                        
+                    }
                 }
                 $("#difference b").html(difference + " &#8381;");
             }else{
@@ -137,11 +144,25 @@ function getPageContent(itemURL,TMPrice){   //  Запрашиваем коне�
                 }
                 $("#percentTMtoSTEAM b").html(persentTMtoSTEAMreal + " %");
             }
+            //  Считаем Steam -> Tm.
+            if(TMOrderPrice && obj.lowest_price){
+                var persentSTEAMtoTMorder = ((( (TMOrderPrice / 1.10) * 100) / lowest ) - 100 ).toFixed(2);  //  Профит.
+                if(persentSTEAMtoTMorder < -20){
+                     $("#percentSTEAMtoTM b").css("color","red");
+                }else{
+                    if(persentSTEAMtoTMorder > -15){
+                         $("#percentSTEAMtoTM b").css("color","limegreen");
+                    }else{
+                        if(persentSTEAMtoTMorder > -20 && persentSTEAMtoTMorder < -15){
+                             $("#percentSTEAMtoTM b").css("color","#e5bc13");
+                        }
+                    }
+                }
+                $("#percentSTEAMtoTM b").html(persentSTEAMtoTMorder + " %");
+            }
             
             //  Вставляем ссылку на предмет.
             document.getElementById("linkSteam").href = "http://steamcommunity.com/market/listings/730/" + itemURL;
-            
-            
         }
     };
     pasteContent();
@@ -176,8 +197,8 @@ function pasteContent(){    //  &#8381;
             "<small class='priceTitle'>Маркет &#8658; Стим-15%</small>"+
             "<b></b>"+
         "</div>"+
-        "<div class='subBlock' id='percentTMtoST' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
-            "<small class='priceTitle'>Стим &#8658; Маркет</small>"+
+        "<div class='subBlock' id='percentSTEAMtoTM' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
+            "<small class='priceTitle'>Стим &#8658; Маркет-10%</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
