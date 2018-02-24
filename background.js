@@ -12,6 +12,14 @@ chrome.extension.onConnect.addListener(function (port) {
 function injected_main() {
 	console.log("Unject");
 }
+
+/**
+ * Метод Формирует url из html, который принимается в параметре res.
+ * @param {string} res
+ * @param {float} TMPrice
+ * @param {float} TMOrderPrice
+ * @returns {undefined}
+ */
 function handler(res,TMPrice,TMOrderPrice){
     var Error = {   //  Ошибка.
         state:false, 
@@ -29,7 +37,6 @@ function handler(res,TMPrice,TMOrderPrice){
     quality = quality.substring(0,quality.length - 7); //  Обрезаем конец строки.
     //  Перевод качества, для составления url.
     var Exterior;
-
     switch(quality.length){
         case 10:    //  Поношенное.
             Exterior = "Well-Worn";
@@ -56,7 +63,6 @@ function handler(res,TMPrice,TMOrderPrice){
         for(var item in Dicrionary["ru"][firstChar]){
             if( item == itemName){
                 itemName = Dicrionary["ru"][firstChar][item];
-                //console.log("GET: ",itemName);
                 break;
             }
         }
@@ -70,15 +76,19 @@ function handler(res,TMPrice,TMOrderPrice){
         var marketNameURL = marketName.replace( /\|/g , "%7C" );
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";
-        //port.postMessage(URL);
         getPageContent(URL,TMPrice,TMOrderPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
-        //port.postMessage(Error.desc);
     }
 }   
         
-//  Функция получает контент страницы Steam.
+/**
+ * Метод делает запрос на страницу, парсит контент и помещает его в каркас вставленного блока.
+ * @param {string} itemURL
+ * @param {float} TMPrice
+ * @param {float} TMOrderPrice
+ * @returns {undefined}
+ */
 function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашиваем конент для блока и вставляем содержимое ответа.
     var url = "https://steamcommunity.com/market/priceoverview/?country=RU&currency=5&appid=730&market_hash_name=" + itemURL;
     // Получаем и парсим код Steam страницы с предметом
@@ -86,26 +96,35 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
     xhr.open("GET", url, true);
     xhr.send();
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status === 200) {
-            var obj = JSON.parse(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status === 200) {    //  Если запрос успешно дал ответ.
+            var obj = JSON.parse(xhr.responseText); //  Парсим ответ.
             //  Вставляем полученные значения в блок.
-            $("#lowest_price b").html(((obj.lowest_price).substring(0,((obj.lowest_price).length) - 5)).replace( /\,/g , "." ) + " &#8381;");
-            $("#median_price b").html(((obj.median_price).substring(0,((obj.median_price).length) - 5)).replace( /\,/g , "." ) + " &#8381;");
+            if(obj.lowest_price){
+               $("#lowest_price b").html(((obj.lowest_price).substring(0,((obj.lowest_price).length) - 5)).replace( /\,/g , "." ) + " &#8381;"); 
+            }else{
+               $("#lowest_price b").html("-"); 
+            }
+            if(obj.median_price){   //  Если средняя цена получена.
+                $("#median_price b").html(((obj.median_price).substring(0,((obj.median_price).length) - 5)).replace( /\,/g , "." ) + " &#8381;");
+            }else{  //  Средняя цена не получена.
+               $("#median_price b").html("-"); 
+            }
+            //  Обрабатываем количество.
             if(obj.volume){
-                var isThousand = false;
-                for(var n = 0; n < obj.volume.length; n++){
-                    if(obj.volume[n] == ","){
-                        isThousand = true;
-                        $("#volume b").html((obj.volume).split(',')[0] + (obj.volume).split(',')[1] + " шт");
+                var isThousand = false; //  Флаг тысяч предметов.
+                for(var n = 0; n < obj.volume.length; n++){ //  Ищем в количестве предметов разделитель тысяч.
+                    if(obj.volume[n] == ","){   //  Если есть разделитель.
+                        isThousand = true;  //  Это тысячное число.
+                        $("#volume b").html((obj.volume).split(',')[0] + (obj.volume).split(',')[1] + " шт");   //  Несколько тысяч.
                     }
                 }
-                if(!isThousand){
-                    $("#volume b").html(obj.volume + " шт");
+                if(!isThousand){    //  Если количество меньше 1000.   
+                    $("#volume b").html(obj.volume + " шт");    //  Просто показываем число.
                 }
-            }else{
-                $("#volume b").html("-");
+            }else{  //  Если объем не получен.
+                $("#volume b").html("-");   //  Рисуем прочерк на его месте.
             }
-            
+            //  Расчитываем разницу цен.
             if(obj.lowest_price && obj.median_price){
                 var lowest = parseFloat(((obj.lowest_price).substring(0,((obj.lowest_price).length) - 5)).replace( /\,/g , "." ));
                 var median = parseFloat(((obj.median_price).substring(0,((obj.median_price).length) - 5)).replace( /\,/g , "." ));
@@ -113,13 +132,12 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
                 if(difference > -1 && difference < 1){
                     $("#difference b").css("color","#e5bc13");
                 }else{
-                    if(difference < -1){
+                    if(difference < -1){    
                         $("#difference b").css("color","limegreen");
                     }else{
                         if(difference > 1){
                             $("#difference b").css("color","red");
                         }
-                        
                     }
                 }
                 $("#difference b").html(difference + " &#8381;");
@@ -160,13 +178,16 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
                 }
                 $("#percentSTEAMtoTM b").html(persentSTEAMtoTMorder + " %");
             }
-            
             //  Вставляем ссылку на предмет.
             document.getElementById("linkSteam").href = "http://steamcommunity.com/market/listings/730/" + itemURL;
         }
     };
-    pasteContent();
 }
+
+/**
+ * Формирует каркас блока, добавляемого на страницу.
+ * @returns {undefined}
+ */
 function pasteContent(){    //  &#8381;
     $(".exchange-link").addClass("injectBlock");
     //  Строим блок.
@@ -194,20 +215,25 @@ function pasteContent(){    //  &#8381;
         "</div>"+
         "<div class='clear'></div>"+
         "<div class='subBlock' id='percentTMtoSTEAM' title='Процент прибыли/потери при покупке предмета а маркете и его продаже в Steam'>"+
-            "<small class='priceTitle'>Маркет &#8658; Стим-15%</small>"+
+            "<small class='priceTitle'>Маркет &#8658; Стим</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='subBlock' id='percentSTEAMtoTM' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
-            "<small class='priceTitle'>Стим &#8658; Маркет-10%</small>"+
+            "<small class='priceTitle'>Стим  &#8658;  Маркет</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
         "<div class='steamLink'><a id='linkSteam' href='#' target='_blank'>Страница предмета в Steam</a></div>");
-  
 }
+
+
+/**
+ * Выполняется при загрузке страницы, работает с DOM текущей вкладки, вызывает обработчик handler(res,TMPrice,TMOrderPrice).
+ * 
+ */
 $(document).ready(function () {
     $.get(chrome.extension.getURL('/js/dictNEW.js'), 
-	function(data) {
+	function(data){    // Подключаем к странице свой js файл.
 		var script = document.createElement("script");
 		script.setAttribute("type", "text/javascript");
 		script.innerHTML = data;
@@ -215,14 +241,14 @@ $(document).ready(function () {
 		document.getElementsByTagName("body")[0].setAttribute("onLoad", "injected_main();");
                 
                 var testElements = document.getElementsByClassName("item-h1");
-                var el = testElements[0];
+                var el = testElements[0];   //  Получили содержание item-h1.
                 //  Получаем цену и ордер со страницы. 
-                var TMPrice = parseFloat($(".ip-bestprice").text());
+                var TMPrice = parseFloat($(".ip-bestprice").text());    //  Текущая цена на маркете.
                 var TMOrderPriceAll = $(".item-stat .rectanglestat b");
-                var TMOrderPrice = parseFloat($(TMOrderPriceAll[5]).text());
-                
+                var TMOrderPrice = parseFloat($(TMOrderPriceAll[5]).text());    //  Текущий наивысший ордер на маркете.
+                console.log(window.location.href);  //  Так можно получить TAB URL.
+                pasteContent(); //  Инжектим в страницу сформированный каркас.
                 handler(el.innerHTML,TMPrice,TMOrderPrice);  //  Обрабатываем содержимое контейнера item-h1
-  
 	}
     );
     
