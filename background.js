@@ -2,9 +2,6 @@
 chrome.extension.onConnect.addListener(function (port) {
     port.onMessage.addListener(function (msg) {
         console.log("Popup.js say: " + msg);
-        //  Получаем исходный код страницы предмета Steam.
-        
-        //  Выполняет действие с DOM.
         
     });
 });
