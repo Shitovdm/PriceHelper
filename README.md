@@ -8,7 +8,7 @@ This extension for chrome, which allows you to monitor the prices of items.
 
 ### Example 1
 
-![screen](https://raw.githubusercontent.com/Shitovdm/PriceHelper/master/img/screen/image.PNG)
+![screen](https://raw.githubusercontent.com/Shitovdm/PriceHelper/master/img/screen.PNG)
 
 
 
