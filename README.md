@@ -1,4 +1,4 @@
-#[PriceHelper](https://raw.githubusercontent.com/Shitovdm/PriceHelper/master/img/logo.png)
+![PriceHelper](https://raw.githubusercontent.com/Shitovdm/PriceHelper/master/img/logo.png)
 
 This extension for chrome, which allows you to monitor the prices of items.
 
