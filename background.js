@@ -55,6 +55,12 @@ function handler(res,TMPrice,TMOrderPrice){
     if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
         //  Находим соответствие из словаря.
         var itemWeapon = marketName.split('|')[0];
+        if( itemWeapon == "ПП-19 Бизон "){
+            itemWeapon = "PP-Bizon%20";
+        }
+        if( itemWeapon == "Револьвер R8 "){
+            itemWeapon = "R8%20Revolver%20";
+        }
         var itemName = (marketName.split('|')[1]).substring(1);
         var firstChar = itemName[0];
         for(var item in Dicrionary["ru"][firstChar]){
@@ -186,9 +192,16 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
  * @returns {undefined}
  */
 function pasteContent(){    //  &#8381;
-    $(".exchange-link").addClass("injectBlock");
-    //  Строим блок.
-    $(".injectBlock").html(""+
+    $(".exchange-link").addClass("injectBlock");    // Помечаем блок, в который в дальнейшем будм помещать контент.
+    //  Создаем блок ссылки обмена.
+    var exchange_link_Content = $(".exchange-link").html(); //  Запоминает собержимое блока, который переопределим в дальнейшем.
+    var exchange_link_Block = document.createElement("div");    //  Создаем новый блок.
+    exchange_link_Block.setAttribute("class", "exchange-link"); //  Добавляем оригинальный класс.
+    exchange_link_Block.innerHTML = exchange_link_Content;  //  Наполняем содержимым.
+    $(".item-page-left").append(exchange_link_Block);   //  Помещаем в конец родительского блока.
+    
+    //  Внедряем свой блок.
+    $(".injectBlock").html(""+  
         "<div class='subBlock' id='lowest_price' title='Самая низка цена на предмет на торговой площадке Steam'>"+
             "<small class='priceTitle'>Текущая цена:</small>"+
             "<div class='clear'></div>"+
@@ -216,7 +229,7 @@ function pasteContent(){    //  &#8381;
             "<b></b>"+
         "</div>"+
         "<div class='subBlock' id='percentSTEAMtoTM' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
-            "<small class='priceTitle'>Стим  &#8658;  Маркет</small>"+
+            "<small class='priceTitle'>Steam  &#8658;  Маркет</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
