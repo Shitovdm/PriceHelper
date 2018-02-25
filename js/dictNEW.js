@@ -8,20 +8,34 @@ Dicrionary = {
             "Азимов": "Asiimov",
             "Аид": "Hades",
             "Айзек": "Isaac",
-            "Армейская сетка": "Army Mesh"
+            "Армейская сетка": "Army Mesh",
+            "Антитерраса": "Counter Terrace",
+            "Антиквариат": "Antique",
+            "Алоха": "Aloha"
         },
         "Б": {
             "Буря на закате 壱": "Sunset Storm 壱",
             "Буря на закате 弐": "Sunset Storm 弐",
             "Бронзовая декорация": "Bronze Deco",
             "Бамбуковые заросли": "Bamboo Forest",
-            "Бизнес-класс": "Business Class"
+            "Бизнес-класс": "Business Class",
+            "Блокировка": "System Lock",
+            "Бульдозер": "Bulldozer",
+            "Боец": "Man-o'-war",
+            "Буря": "Tempest",
+            "В центре внимания": "Limelight",
+            "Безмятежность": "Serenity",
+            "Белое напыление": "Sage Spray"
         },
         "В": {
             "Виктория": "Victoria",
             "Возмездие": "Retribution",
             "Валентность": "Valence",
-            "Возвращение":  "Re-Entry"
+            "Возвращение":  "Re-Entry",
+            "Восходящий череп": "Rising Skull",
+            "Ветеран": "Fubar",
+            "Времена года": "Seasons",
+            "Вороненая сталь": "Blue Steel"
         },
         "Г": {
             "Гексан": "Hexane",
@@ -34,7 +48,14 @@ Dicrionary = {
             "Гремучая смерть": "Death Rattle",
             "Грунтовая вода": "Groundwater",
             "Градиент": "Fade",
-            "Грани": "Facets"
+            "Грани": "Facets",
+            "Гроза": "Storm",
+            "Графит": "Graphite",
+            "Грецкий орех": "Walnut",
+            "Горелка Теклу": "Teclu Burner",
+            "Голубая хвоя": "Blue Spruce",
+            "Городская перфорация": "Urban Perforated",
+            "Гравировка": "Graven"
         },
         "Д": {
             "Директива": "Directive",
@@ -59,7 +80,9 @@ Dicrionary = {
         "Ж": {
             "Желтый жакет": "Yellow Jacket",
             "Жернов": "Grinder",
-            "Железное покрытие": "Iron Clad"
+            "Железное покрытие": "Iron Clad",
+            "Жар": "Heat",
+            "Желто-черные полосы": "Hazard"
         },
         "З": {
             "Зеленая клетка": "Green Plaid",
@@ -69,14 +92,18 @@ Dicrionary = {
             "Защитник империи": "Imperial",
             "Зыбь": "Ripple",
             "Заражение": "Contamination",
-            "Закрученный": "Torque"
+            "Закрученный": "Torque",
+            "Зеленое яблоко": "Green Apple",
+            "Змеиная кожа": "Snake Camo",
+            "Зигги": "Ziggy"
         },
         "И": {
             "Изумруд": "Emerald",
-            "Императорский дракон": "Imperial Dragon"
+            "Императорский дракон": "Imperial Dragon",
+            "Индиго": "Indigo"
         },
         "Й": {
-            
+            "Йорик": "Yorick"
         },
         "К": {
             "Красный ястреб": "Red Astor",
@@ -99,6 +126,19 @@ Dicrionary = {
             "Королевский синий": "Royal Blue",
             "Кайман": "Caiman",
             "Камуфляж": "Overgrowth",
+            "Космический воитель": "Nebula Crusader",
+            "Контрастные цвета" : "Contrast Spray",
+            "Крокодиловая сетка" : "Gator Mesh",
+            "Конфуз": "Dazzle",
+            "Крикун": "Loudmouth",
+            "Калифорнийский камуфляж": "CaliCamo",
+            "Карп кои": "Koi",
+            "Клетчатая сталь": "Caged Steel",
+            "Кракен": "The Kraken",
+            "Костемолка": "Bone Machine",
+            "Красный питон": "Red Python",
+            "Красная кожа": "Red Leather",
+            "Клочья": "Tatter"
         },
         "Л": {
             "Листовая сталь": "Tread Plate",
@@ -113,14 +153,22 @@ Dicrionary = {
             "Ледниковый покров": "Ice Cap",
             "Лавина": "Avalanche",
             "Лесные листья": "Forest Leaves",
-            "Лама-пушка": "Llama Cannon"
+            "Лама-пушка": "Llama Cannon",
+            "Лесничий": "Ranger",
+            "Лазурный хищник": "Lapis Gator"
         },
         "М": {
             "Метеорит": "Meteorite",
             "Медная галактика": "Copper Galaxy",
             "Мраморный гранит": "Granite Marbleized",
             "Малиновое кимоно": "Crimson Kimono",
-            "Мятное кимоно": "Mint Kimono"
+            "Мятное кимоно": "Mint Kimono",
+            "Магма" : "Magma",
+            "Мраморный буран" : "Blizzard Marbleized",
+            "Моррис": "Morris",
+            "Мозаика": "Mosaico",
+            "Медь": "Copper",
+            "Малахит": "Malachite"
         },
         "Н": {
             "Нитро": "Nitro",
@@ -134,7 +182,9 @@ Dicrionary = {
             "Неоновое кимоно": "Neon Kimono",
             "Неонуар": "Neo-Noir",
             "Нержавейка": "Stainless",
-            "Ночные операции": "Night Ops"
+            "Ночные операции": "Night Ops",
+            "Насыщенная вода" : "Hard Water",
+            "Неоновый гонщик": "Neon Rider"
         },
         "О": {
             "Отравленный дротик": "Poison Dart",
@@ -145,7 +195,10 @@ Dicrionary = {
             "Океанская пена": "Ocean Foam",
             "Охотник": "Wingshot",
             "Окостеневший": "Ossified",
-            "Орион": "Orion"
+            "Орион": "Orion",
+            "Объемные шестиугольники": "Memento",
+            "Оранжевое пламя": "Blaze Orange",
+            "Оригами": "Origami"
         },
         "П": {
             "Полимер": "Polymer",
@@ -176,13 +229,43 @@ Dicrionary = {
             "Песчаная буря": "Sandstorm",
             "Проводник": "Lead Conduit",
             "Подтвержденное убийство": "Kill Confirmed",
-            "Перезагрузка": "Reboot"
+            "Перезагрузка": "Reboot",
+            "Призрак": "Spectre",
+            "Приморский прогноз": "Shipping Forecast",
+            "Пиксельный камуфляж «Джунгли»" : "Jungle DDPAT",
+            "Петроглиф": "Petroglyph",
+            "Преторианец": "Praetorian",
+            "Поджигатель": "Firestarter",
+            "Погрузчик": "Power Loader",
+            "Пустынная атака": "Desert-Strike",
+            "Почва": "Terrain",
+            "Пальма": "Palm",
+            "Полярная сетка": "Polar Mesh",
+            "Призрачный камуфляж": "Ghost Camo",
+            "Принцесса пустошей": "Wasteland Princess",
+            "Первый класс": "First Class",
+            "Пыльник": "Rust Coat",
+            "Пиксельный камуфляж «Лес»": "Forest DDPAT",
+            "Полная остановка": "Full Stop",
+            "Пиксельный камуфляж «Ржавчина»": "Orange DDPAT",
+            "Поток": "Slipstream",
+            "Последнее погружение": "Last Dive",
+            "Плотоядный": "Carnivore",
+            "Пассажир": "Commuter",
+            "Проклятие": "Curse"
         },
         "Р": {
             "Ржавый кобальт": "Cobalt Disruption",
             "Ржавая сталь": "Steel Disruption",
             "Роспись": "Mehndi",
-            "Реактор": "Reactor"
+            "Реактор": "Reactor",
+            "Райский страж": "Heaven Guard",
+            "Радиоактивная опасность": "Irradiated Alert",
+            "Радиоактивные отходы": "Nuclear Waste",
+            "Расцветающая ветка": "Bloomstick",
+            "Разбойник": "Highwayman",
+            "Ртуть": "Quicksilver",
+            "Радиоактивные осадки": "Fallout Warning"
         },
         "С": {
             "Сян-лю": "Xiangliu",
@@ -206,7 +289,10 @@ Dicrionary = {
             "Сайрекс": "Cyrex",
             "Следы асфальта": "Road Rash",
             "Сыворотка": "Serum",
-            "Страж": "Guardian"
+            "Страж": "Guardian",
+            "Судак": "Zander",
+            "Спокойствие": "Tranquility",
+            "Смешанный синий камуфляж": "VariCamo Blue"
         },
         "Т": {
             "Тактикотик": "Tacticat",
@@ -220,17 +306,24 @@ Dicrionary = {
             "Топливный инжектор": "Fuel Injector",
             "Терраса": "Terrace",
             "Токсичность": "Toxic",
-            "Темная вода": "Dark Water"
+            "Темная вода": "Dark Water",
+            "Тра-та-та": "Bratatat",
+            "Тень бамбука": "Bamboo Shadow",
+            "Градиент": "Fade"
         },
         "У": {
             "Удар кобры": "Cobra Strike",
-            "Улей": "Hive"
+            "Улей": "Hive",
+            "Укус изумрудного яда": "Emerald Poison Dart",
+            "Ударная дрель" : "Impact Drill",
+            "Ультрафиолет": "Ultraviolet"
         },
         "Ф": {
             "Франклин": "Franklin"
         },
         "Х": {
-            
+            "Хищник": "Predator",
+            "Хроматика": "Rangeen"
         },
         "Ц": {
             "Цвет луга": "Grassland",
@@ -239,7 +332,9 @@ Dicrionary = {
         "Ч": {
             "Чаша": "Chalice",
             "Черная лимба": "Black Limba",
-            "Частица титана": "Titanium Bit"
+            "Частица титана": "Titanium Bit",
+            "Чайка": "Seabird",
+            "Черный галстук": "Black Tie"
         },
         "Ш": {
             "Штамп": "Imprint"
@@ -261,14 +356,19 @@ Dicrionary = {
             
         },
         "Э": {
-            "Эконом-класс": "Coach Class"
+            "Эконом-класс": "Coach Class",
+            "Эхолот": "Sonar",
+            "Экзо": "Exo"
         },
         "Ю": {
             
         },
         "Я": {
             "Янтарный градиент": "Amber Fade",
-            "Ядерная угроза": "Nuclear Threat"
+            "Ядерная угроза": "Nuclear Threat",
+            "Ядро кобальта": "Cobalt Core",
+            "Ядозуб": "Gila",
+            "Ядерный сад": "Nuclear Garden"
         }
     }
 };
