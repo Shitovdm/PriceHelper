@@ -4,7 +4,5 @@ var port = chrome.extension.connect({
  port.onMessage.addListener(function(msg) {
       console.log("Say: " + msg);
  });
-$(document).ready(function(){
-    
-});
+
 

@@ -5,7 +5,42 @@ chrome.extension.onConnect.addListener(function (port) {
         
     });
 });
-
+function injectBlock(){
+    //  Внедряем свой блок.
+    $(".injectBlock").html(""+  
+        "<div class='subBlock' id='lowest_price' title='Самая низка цена на предмет на торговой площадке Steam'>"+
+            "<small class='priceTitle'>Текущая цена:</small>"+
+            "<div class='clear'></div>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='subBlock' id='median_price' title='Средняя цена на предмет за последнии сутки на торговой площаде Steam'>"+
+            "<small class='priceTitle'>Средняя цена:</small>"+
+            "<div class='clear'></div>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='clear'></div>"+
+        "<div class='subBlock' id='volume' title='Количество проданных предметов за последнии 24 часа на торговой площадке Steam'>"+
+            "<small class='priceTitle'>Объем за 24 часа:</small>"+
+            "<div class='clear'></div>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='subBlock' id='difference' title='Разница между самой низкой на данный момент ценой, и средней ценой за сутки на торговой площадке Steam'>"+
+            "<small class='priceTitle'>Текущая - средняя:</small>"+
+            "<div class='clear'></div>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='clear'></div>"+
+        "<div class='subBlock' id='percentTMtoSTEAM' title='Процент прибыли/потери при покупке предмета а маркете и его продаже в Steam'>"+
+            "<small class='priceTitle'>Маркет &#8658; Стим</small>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='subBlock' id='percentSTEAMtoTM' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
+            "<small class='priceTitle'>Стим  &#8658;  Маркет</small>"+
+            "<b></b>"+
+        "</div>"+
+        "<div class='clear'></div>"+
+        "<div class='steamLink'><a id='linkSteam' href='#' target='_blank'>Страница предмета в Steam</a></div>");
+}
 function injected_main() {
 	console.log("Unject");
 }
@@ -176,6 +211,10 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
     xhr.send();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status === 200) {    //  Если запрос успешно дал ответ.
+            //  Данные получены, убираем прелоадер, вставляем блок.
+            $(".preloaderBlock").hide();
+            $(".injectBlock").show();
+            
             var obj = JSON.parse(xhr.responseText); //  Парсим ответ.
             //  Вставляем полученные значения в блок.
             if(obj.lowest_price){
@@ -268,7 +307,7 @@ function getPageContent(itemURL,TMPrice,TMOrderPrice){   //  Запрашива�
  * @returns {undefined}
  */
 function pasteContent(){    //  &#8381;
-    $(".exchange-link").addClass("injectBlock");    // Помечаем блок, в который в дальнейшем будм помещать контент.
+    $(".exchange-link").addClass("workspaceBlock");    // Помечаем блок, в который в дальнейшем будм помещать контент.
     //  Создаем блок ссылки обмена.
     var exchange_link_Content = $(".exchange-link").html(); //  Запоминает собержимое блока, который переопределим в дальнейшем.
     var exchange_link_Block = document.createElement("div");    //  Создаем новый блок.
@@ -276,6 +315,16 @@ function pasteContent(){    //  &#8381;
     exchange_link_Block.innerHTML = exchange_link_Content;  //  Наполняем содержимым.
     $(".item-page-left").append(exchange_link_Block);   //  Помещаем в конец родительского блока.
     
+    //  Создаем два блока, один для контента, второй для прелоадера.
+    var preloaderBlock = document.createElement("div");
+    var injectBlock = document.createElement("div");
+    preloaderBlock.setAttribute("class", "preloaderBlock");
+    injectBlock.setAttribute("class", "injectBlock");
+    $(".workspaceBlock").html(preloaderBlock);
+    $(".workspaceBlock").append(injectBlock);
+    
+    $(".preloaderBlock").html('<div class="banter-loader"><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div></div>'); 
+            
     //  Внедряем свой блок.
     $(".injectBlock").html(""+  
         "<div class='subBlock' id='lowest_price' title='Самая низка цена на предмет на торговой площадке Steam'>"+
@@ -310,7 +359,10 @@ function pasteContent(){    //  &#8381;
         "</div>"+
         "<div class='clear'></div>"+
         "<div class='steamLink'><a id='linkSteam' href='#' target='_blank'>Страница предмета в Steam</a></div>");
+
+        $(".injectBlock").hide();
 }
+
 
 
 /**
@@ -319,7 +371,15 @@ function pasteContent(){    //  &#8381;
  */
 $(document).ready(function () {
     $.get(chrome.extension.getURL('/lib/Dictionary.js'), 
-	function(data){    // Подключаем к странице свой js файл.
+	function(data){
+                //  Подключаем стили.
+                var preloaderUrl = chrome.extension.getURL("css/preloader.css");
+                var link = document.createElement("link");
+                link.setAttribute("rel", "stylesheet");
+                link.setAttribute("type", "text/css");
+                link.setAttribute("href", preloaderUrl);
+                document.getElementsByTagName("head")[0].appendChild(link);
+                //  js.
 		var script = document.createElement("script");
 		script.setAttribute("type", "text/javascript");
 		script.innerHTML = data;
