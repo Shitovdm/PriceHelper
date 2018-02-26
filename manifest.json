@@ -6,12 +6,12 @@
     "options_page": "options.html",
     "description" : "Expansion shows the price of the item from the trading platform Steam.",
     "background": {
-        "scripts": ["js/jquery.min.js","background.js","lib/dictionary.js"],
+        "scripts": ["js/jquery.min.js","background.js","lib/Dictionary.js"],
         "persistent": false
     },
     "web_accessible_resources": [
-        "lib/dictNEW.js"
-    ],
+        "lib/Dictionary.js"
+    ],  
     "browser_action": {
         "default_title": "Settings",
         "default_icon": "img/icon.png",
@@ -25,7 +25,7 @@
     "content_scripts": [
     {
       "matches": [ "https://market.csgo.com/*/*" ],
-      "js": [ "js/jquery.min.js", "background.js","lib/dictionary.js" ],
+      "js": [ "js/jquery.min.js", "background.js","lib/Dictionary.js" ],
       "css" : ["css/inject.css"],
             "html" : ["html/inject.html"],
 	  "run_at": "document_end"

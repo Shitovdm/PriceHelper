@@ -60,31 +60,60 @@ function handler(res,TMPrice,TMOrderPrice){
     }
     console.log(Exterior,marketName); //  Если качество не указано.
     //  Если у предмета отсутствует качество.
-    if(Exterior == "none"){ //  Это либо ключ, либо каробка, либо наклейка.
-        //  http://steamcommunity.com/market/listings/730/Clutch%20Case
-        console.log("Not weapon!");
-        //var URL = marketName.replace( /\s/g,"%20" );
-        //var URL = URL.replace( /\|/g , "%7C" );
-        //  Если предмет - наклейка. В названии содержатся 2 символа "|".
-        var DelimregEx = /\|/g;
-        var DelimContainer = DelimregEx.exec(marketName);
+    if(Exterior == "none"){ //  Это либо ключ, либо коробка/капсула, либо наклейка, значок.
         if( marketName.split('|').length == 1){ //  В названии нет символов "|";
             console.log("Кейс, капсула");
+            if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
+                //  Переводим.
+            }
+            var URL = marketName.replace( /\s/g,"%20" );
             //console.log(marketName.split('|').length);
-        }else{
+        }else{  //  В названии есть символы "|".
             //  Наклейка.
             if(marketName.split('|').length == 3){  //  Автограф/Команда.   Sticker%20%7C%20MSL%20%7C%20Atlanta%202017
-                var name = marketName.split('|')[1];
+                var name = marketName.split('|')[1].substring(1);
+                //  Находим тип наклейки(если есть). металлическая/голографическая.
+                if(name.split('(').length == 1){  //  Тип не указан (обычная).
+                    var type = "";
+                }else{  //  Тип указан.
+                    var type = (name.split('(')[1]).split(')')[0];
+                    //  Переводим тип.
+                    if(type == "металлическая"){
+                        type = "%20%28Foil%29";
+                    }else{
+                        if(type == "голографическая"){
+                            type = "%20%28Holo%29";
+                        }else{  type = ""; }
+                    }
+                }
+                name = name.split('(')[0];
+                name = name.substring(0,name.length - 1);
+                
                 var place = marketName.split('|')[2];
-                console.log("Автограф/Команда");
-                var URL = "Sticker%20%7C%20" + name + "%20%7C%20" + place;
+                var year = place.substr(place.length - 4);
+                place = place.substr(1,place.length - 6);
+                //  Переводим место.
+                for(var city in OtherDicrionary["ru"]["place"]){
+                    if( city == place){
+                        place = OtherDicrionary["ru"]["place"][city];
+                        break;
+                    }
+                }
+                if(marketName.split('|')[0] == "Запечатанный граффити "){
+                    console.log("Запечатанный граффити");
+                    var URL = "Sealed%20Graffiti%20%7C%20" + name + type + "%20%7C%20" + place + "%20" + year;
+                }else{
+                    console.log("Автограф/Команда");
+                    var URL = "Sticker%20%7C%20" + name + type + "%20%7C%20" + place + "%20" + year;
+                }
+                
             }else{  //  Наклейка.    Sticker%20%7C%20Welcome%20to%20the%20Clutch
                 console.log("Наклейка");
                 var name = marketName.split('|')[1];
                 var URL = "Sticker%20%7C%20" + name;
                 
             }
-            console.log(URL);
+            //console.log(URL);
         }
     }else{
         // Необходимо переводить название предметов на русский язык.
@@ -104,9 +133,9 @@ function handler(res,TMPrice,TMOrderPrice){
             var itemName = (marketName.split('|')[1]).substring(1); //  Имя предмета.
             //  Находим соответствие из словаря. Поиск по имени.
             var firstChar = itemName[0];
-            for(var item in Dicrionary["ru"][firstChar]){
+            for(var item in WeaponDicrionary["ru"][firstChar]){
                 if( item == itemName){
-                    itemName = Dicrionary["ru"][firstChar][item];
+                    itemName = WeaponDicrionary["ru"][firstChar][item];
                     break;
                 }
             }
@@ -126,7 +155,7 @@ function handler(res,TMPrice,TMOrderPrice){
         /*var marketNameURL = marketName.replace( /\|/g , "%7C" );
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";*/
-        //getPageContent(URL,TMPrice,TMOrderPrice);
+        getPageContent(URL,TMPrice,TMOrderPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
     }
@@ -289,7 +318,7 @@ function pasteContent(){    //  &#8381;
  * 
  */
 $(document).ready(function () {
-    $.get(chrome.extension.getURL('/js/dictNEW.js'), 
+    $.get(chrome.extension.getURL('/lib/Dictionary.js'), 
 	function(data){    // Подключаем к странице свой js файл.
 		var script = document.createElement("script");
 		script.setAttribute("type", "text/javascript");
