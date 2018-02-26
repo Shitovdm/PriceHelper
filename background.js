@@ -97,9 +97,15 @@ function handler(res,TMPrice,TMOrderPrice){
     //  Если у предмета отсутствует качество.
     if(Exterior == "none"){ //  Это либо ключ, либо коробка/капсула, либо наклейка, значок.
         if( marketName.split('|').length == 1){ //  В названии нет символов "|";
-            console.log("Кейс, капсула");
+            console.log("Кейс, капсула,ключ");
             if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
                 //  Переводим.
+                for(var name in OtherDicrionary["ru"]["cases_keys"]){
+                    if( name == marketName){
+                        marketName = OtherDicrionary["ru"]["cases_keys"][name];
+                        break;
+                    }
+                }  
             }
             var URL = marketName.replace( /\s/g,"%20" );
             //console.log(marketName.split('|').length);
@@ -118,7 +124,13 @@ function handler(res,TMPrice,TMOrderPrice){
                     }else{
                         if(type == "голографическая"){
                             type = "%20%28Holo%29";
-                        }else{  type = ""; }
+                        }else{  
+                            if(type == "золотая"){
+                                type = "%20%28Gold%29";
+                            }else{  
+                                type = ""; 
+                            }
+                        }
                     }
                 }
                 name = name.split('(')[0];
@@ -322,7 +334,7 @@ function pasteContent(){    //  &#8381;
     injectBlock.setAttribute("class", "injectBlock");
     $(".workspaceBlock").html(preloaderBlock);
     $(".workspaceBlock").append(injectBlock);
-    
+    //$(".workspaceBlock").removeClass("exchange-link");
     $(".preloaderBlock").html('<div class="banter-loader"><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div><div class="banter-loader__box"></div></div>'); 
             
     //  Внедряем свой блок.
