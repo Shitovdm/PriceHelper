@@ -28,7 +28,7 @@ function handler(res,TMPrice,TMOrderPrice){
     var marketName = nameContainer[0].substring(27);   //  Обрезаем начало строки.
     marketName = marketName.substring(0,marketName.length - 5); //  Обрезаем конец строки.
     
-    //  Если у предмета отсутствует качество.
+    
     
     
     //  Парсим качество.
@@ -59,12 +59,36 @@ function handler(res,TMPrice,TMOrderPrice){
             break;
     }
     console.log(Exterior,marketName); //  Если качество не указано.
+    //  Если у предмета отсутствует качество.
     if(Exterior == "none"){ //  Это либо ключ, либо каробка, либо наклейка.
         //  http://steamcommunity.com/market/listings/730/Clutch%20Case
         console.log("Not weapon!");
-        var URL = marketName.replace( /\s/g,"%20" );
+        //var URL = marketName.replace( /\s/g,"%20" );
+        //var URL = URL.replace( /\|/g , "%7C" );
+        //  Если предмет - наклейка. В названии содержатся 2 символа "|".
+        var DelimregEx = /\|/g;
+        var DelimContainer = DelimregEx.exec(marketName);
+        if( marketName.split('|').length == 1){ //  В названии нет символов "|";
+            console.log("Кейс, капсула");
+            //console.log(marketName.split('|').length);
+        }else{
+            //  Наклейка.
+            if(marketName.split('|').length == 3){  //  Автограф/Команда.   Sticker%20%7C%20MSL%20%7C%20Atlanta%202017
+                var name = marketName.split('|')[1];
+                var place = marketName.split('|')[2];
+                console.log("Автограф/Команда");
+                var URL = "Sticker%20%7C%20" + name + "%20%7C%20" + place;
+            }else{  //  Наклейка.    Sticker%20%7C%20Welcome%20to%20the%20Clutch
+                console.log("Наклейка");
+                var name = marketName.split('|')[1];
+                var URL = "Sticker%20%7C%20" + name;
+                
+            }
+            console.log(URL);
+        }
     }else{
         // Необходимо переводить название предметов на русский язык.
+        console.log("Оружие");
         if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
             //  Единичные исправления.
             var itemWeapon = marketName.split('|')[0];
@@ -102,7 +126,7 @@ function handler(res,TMPrice,TMOrderPrice){
         /*var marketNameURL = marketName.replace( /\|/g , "%7C" );
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";*/
-        getPageContent(URL,TMPrice,TMOrderPrice);
+        //getPageContent(URL,TMPrice,TMOrderPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
     }

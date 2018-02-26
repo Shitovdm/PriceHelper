@@ -1,16 +1,16 @@
 {
     "manifest_version": 2,
-    "name" : "TradeHelper", 
+    "name" : "PriceHelper", 
     "version" : "1.2",
     
     "options_page": "options.html",
     "description" : "Expansion shows the price of the item from the trading platform Steam.",
     "background": {
-        "scripts": ["js/jquery.min.js","background.js","js/dictionary.js"],
+        "scripts": ["js/jquery.min.js","background.js","lib/dictionary.js"],
         "persistent": false
     },
     "web_accessible_resources": [
-        "js/dictNEW.js"
+        "lib/dictNEW.js"
     ],
     "browser_action": {
         "default_title": "Settings",
@@ -25,7 +25,7 @@
     "content_scripts": [
     {
       "matches": [ "https://market.csgo.com/*/*" ],
-      "js": [ "js/jquery.min.js", "background.js","js/dictionary.js" ],
+      "js": [ "js/jquery.min.js", "background.js","lib/dictionary.js" ],
       "css" : ["css/inject.css"],
             "html" : ["html/inject.html"],
 	  "run_at": "document_end"
