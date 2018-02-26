@@ -27,6 +27,10 @@ function handler(res,TMPrice,TMOrderPrice){
     var nameContainer = NameregEx.exec(res);
     var marketName = nameContainer[0].substring(27);   //  Обрезаем начало строки.
     marketName = marketName.substring(0,marketName.length - 5); //  Обрезаем конец строки.
+    
+    //  Если у предмета отсутствует качество.
+    
+    
     //  Парсим качество.
     var QualityregEx = /<span.*?>.*?<\/span>/;
     var qualityContainer = QualityregEx.exec(res);
@@ -50,35 +54,54 @@ function handler(res,TMPrice,TMOrderPrice){
         case 14:    //  Прямо с завода.
             Exterior = "Factory New";
             break;
+        default:    //  Качество не указано.
+            Exterior = "none";
+            break;
     }
-    // Необходимо переводить название предметов на русский язык.
-    if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
-        //  Находим соответствие из словаря.
-        var itemWeapon = marketName.split('|')[0];
-        if( itemWeapon == "ПП-19 Бизон "){
-            itemWeapon = "PP-Bizon%20";
-        }
-        if( itemWeapon == "Револьвер R8 "){
-            itemWeapon = "R8%20Revolver%20";
-        }
-        var itemName = (marketName.split('|')[1]).substring(1);
-        var firstChar = itemName[0];
-        for(var item in Dicrionary["ru"][firstChar]){
-            if( item == itemName){
-                itemName = Dicrionary["ru"][firstChar][item];
-                break;
+    console.log(Exterior,marketName); //  Если качество не указано.
+    if(Exterior == "none"){ //  Это либо ключ, либо каробка, либо наклейка.
+        //  http://steamcommunity.com/market/listings/730/Clutch%20Case
+        console.log("Not weapon!");
+        var URL = marketName.replace( /\s/g,"%20" );
+    }else{
+        // Необходимо переводить название предметов на русский язык.
+        if (/[а-я]+/.test(marketName)) {   //  Если в строке есть русские символы.
+            //  Единичные исправления.
+            var itemWeapon = marketName.split('|')[0];
+            if( itemWeapon == "ПП-19 Бизон "){  //  Бизон.
+                itemWeapon = "PP-Bizon%20";
+            } 
+            if( itemWeapon == "StatTrak™ ПП-19 Бизон "){  //  Бизон StatTrak.
+                itemWeapon = "StatTrak™%20PP-Bizon%20";
             }
+            if( itemWeapon == "Револьвер R8 "){
+                itemWeapon = "R8%20Revolver%20";
+            }
+            var itemName = (marketName.split('|')[1]).substring(1); //  Имя предмета.
+            //  Находим соответствие из словаря. Поиск по имени.
+            var firstChar = itemName[0];
+            for(var item in Dicrionary["ru"][firstChar]){
+                if( item == itemName){
+                    itemName = Dicrionary["ru"][firstChar][item];
+                    break;
+                }
+            }
+            if(/[а-я]+/.test(itemName)){   //  Если перевода названию не нашлось в словаре.
+                Error.state = true;
+                Error.desc = "В словаре нет перевода для данного предмета.";
+            }
+            marketName = itemWeapon + "| " + itemName;  //  Формируем market_name.
         }
-        if(/[а-я]+/.test(itemName)){   //  Если перевода названию не нашлось в словаре.
-            Error.state = true;
-            Error.desc = "В словаре нет перевода для данного предмета.";
-        }
-        marketName = itemWeapon + "| " + itemName;  //  Формируем market_name.
-    }
-    if(!Error.state){   //  Если ошибок не было.
+        //  Формируем url.
         var marketNameURL = marketName.replace( /\|/g , "%7C" );
         marketNameURL = marketNameURL.replace( /\s/g,"%20" );
         var URL = marketNameURL + "%20%28" + Exterior + "%29";
+    }
+    
+    if(!Error.state){   //  Если ошибок не было.
+        /*var marketNameURL = marketName.replace( /\|/g , "%7C" );
+        marketNameURL = marketNameURL.replace( /\s/g,"%20" );
+        var URL = marketNameURL + "%20%28" + Exterior + "%29";*/
         getPageContent(URL,TMPrice,TMOrderPrice);
     }else{  //  Ошибка.
         console.log(Error.desc);
@@ -229,7 +252,7 @@ function pasteContent(){    //  &#8381;
             "<b></b>"+
         "</div>"+
         "<div class='subBlock' id='percentSTEAMtoTM' title='Процент потери при покупке данного предмета в Steam и продаже его на маркете'>"+
-            "<small class='priceTitle'>Steam  &#8658;  Маркет</small>"+
+            "<small class='priceTitle'>Стим  &#8658;  Маркет</small>"+
             "<b></b>"+
         "</div>"+
         "<div class='clear'></div>"+
