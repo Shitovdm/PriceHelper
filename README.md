@@ -1,6 +1,6 @@
 ![PriceHelper](https://raw.githubusercontent.com/Shitovdm/PriceHelper/master/img/logo.png)
 ***
-**The store changed the procedure for buying items, but this did not affect the performance of the extension!**
+**The store changed the procedure for buying items, but this did not affect the performance of the extension!**  
 This is a Google Chrome extension that allows you to track current and median item price on CSGOTM. Moreover, PriceHelper™ calculates the percentage difference while transfering items between Steam™ and CSGOTM™.
 
 The information on prices is shown in individual container right under the main item price on CSGOTM™ <https://market.csgo.com>
